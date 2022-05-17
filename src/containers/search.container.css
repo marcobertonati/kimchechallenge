@@ -1,0 +1,38 @@
+html {
+    background-color: #FEF6E4;
+
+}
+
+#root {
+    background-color: #FEF6E4;
+
+}
+
+.search-container {
+    background-color: #F3D2C1;
+    margin-top: 3rem;
+    padding: 2rem;
+    border-radius: 10px;
+
+
+}
+
+.search-container-box {
+    margin: 1rem 0rem;
+    border-radius: 30px;
+    
+}
+
+#btn-continent , #btn-lenguage {
+    background-color: #F582AE;
+    border: none;
+    margin-top: 1rem;
+    border-radius: 30px;
+
+}
+#btn-continent:focus , #btn-lenguage:focus {
+    background-color: #ff4b90;
+
+
+}
+

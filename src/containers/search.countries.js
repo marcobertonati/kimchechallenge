@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 
 /* Components */
 import Search from "../components/search";
+import CountriesByContinent from "../components/countries.by.continent";
+import CountriesByLenguage from "../components/countries.by.lenguage";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./search.container.css";
+
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 /* Apollo modules */
 import { gql } from "apollo-boost";
@@ -29,16 +36,21 @@ export default function SearchCountries() {
   const [countriesByContinent, setCountriesByContinent] = useState([]);
   const [countriesByLenguage, setCountriesByLenguage] = useState([]);
 
+  /* Set the component showed by clicking buttons */
+  const [showGroup, setShowGroup] = useState("0");
+
   /* Graphql Query */
   const { loading, error, data } = useQuery(GET_COUNTRIES);
 
-  /* This function take the valeu of input and set states */
+  /* This function take the value of input and set states */
   function onHandleChange() {
     /* Take the value of the input a filter countriets that contain the characters of input */
     const value = document.getElementById("input-search-country").value;
     const filteredCountries = data.countries.filter((country) =>
       country.name.toLowerCase().includes(value.toLowerCase())
     );
+
+    /* COUNTRIES BY CONTINENT */
 
     const countriesFilteredByContinent = filteredCountries.reduce(
       (acc, country) => {
@@ -61,6 +73,8 @@ export default function SearchCountries() {
     );
     setCountriesByContinent(arrCountriesByContinent);
 
+    /* COUNTRIES BY LENGUAGE */
+
     const countriesFilteredByLenguage = filteredCountries.reduce(
       (acc, country) => {
         const lenguages = country.languages;
@@ -80,29 +94,61 @@ export default function SearchCountries() {
 
     const arrCountriesByLenguages = Object.entries(countriesFilteredByLenguage);
     setCountriesByLenguage(arrCountriesByLenguages);
-    console.log(countriesByLenguage);
+  }
+
+  function onHandleClick(event) {
+    setShowGroup(event.target.value);
   }
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
   return (
-    <>
-      <Search onHandleChange={onHandleChange} />
-      {/* <h1>Country search</h1>
-      <div>
-        <label for="input-search-country">Some random text:</label>
-        <input
-          name="input-search-country"
-          id="input-search-country"
-          type="text"
-          onChange={onHandleChange}
-        />
-      </div> */}
+    <Container className="search-container">
+      <Row className="search-container-box">
+        <Col>
+          <Search onHandleChange={onHandleChange} />
+          <Row>
+            <Button
+              id="btn-continent"
+              onClick={onHandleClick}
+              value="0"
+              variant="outline-light"
+            >
+              Group by Continent{" "}
+              {countriesByContinent.length === 0 ? (
+                ""
+              ) : (
+                <span> : {countriesByContinent.length}</span>
+              )}
+            </Button>
+            <Button
+              id="btn-lenguage"
+              onClick={onHandleClick}
+              value="1"
+              variant="outline-light"
+            >
+              Group by Lenguage{" "}
+              {countriesByLenguage.length === 0 ? (
+                ""
+              ) : (
+                <span> : {countriesByLenguage.length}</span>
+              )}
+            </Button>
+          </Row>
+        </Col>
+      </Row>
 
-      <h2>Group by continent</h2>
+      <Row className="search-container-box">
+        <Col>
+          {showGroup === "0" ? (
+            <CountriesByContinent countries={countriesByContinent} />
+          ) : (
+            <CountriesByLenguage countries={countriesByLenguage} />
+          )}
+        </Col>
 
-      <div>
+        {/* <div>
         {countriesByContinent.map((continent) => {
           return (
             <>
@@ -112,8 +158,8 @@ export default function SearchCountries() {
                 {continent[1].map((country) => {
                   return (
                     <div>
-                      {/* <span>{country.emoji}</span> */}
-                      {/* <p style={{ fontFamily: "Arial" }}>{country.emojiU};</p> */}
+                      <span>{country.emoji}</span> 
+                      <p style={{ fontFamily: "Arial" }}>{country.emojiU};</p> 
                       <p>{country.name}</p>
                     </div>
                   );
@@ -123,9 +169,9 @@ export default function SearchCountries() {
             </>
           );
         })}
-      </div>
+      </div> */}
 
-      <h2>Group by lenguage</h2>
+        {/* <h2>Group by lenguage</h2>
 
       <div>
         {countriesByLenguage.map((lenguage) => {
@@ -137,8 +183,8 @@ export default function SearchCountries() {
                 {lenguage[1].map((country) => {
                   return (
                     <div>
-                      {/* <span>{country.emoji}</span> */}
-                      {/* <p style={{ fontFamily: "Arial" }}>{country.emojiU};</p> */}
+                      <span>{country.emoji}</span>
+                      <p style={{ fontFamily: "Arial" }}>{country.emojiU};</p>
                       <p>{country.name}</p>
                     </div>
                   );
@@ -148,7 +194,8 @@ export default function SearchCountries() {
             </>
           );
         })}
-      </div>
-    </>
+      </div> */}
+      </Row>
+    </Container>
   );
 }
