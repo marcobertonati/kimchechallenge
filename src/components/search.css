@@ -1,9 +1,23 @@
 h1 {
     color: #001858;
     font-weight: 900!important;
+}
 
+.box-search{
+    background-color: white;
+    padding: 0.2rem 0.2rem;
+    border-radius: 10px;
 }
 
 #input-search-country{
-    margin-left: 1rem;
+    margin-left: 0.2rem;
+    outline: none;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+}
+
+#input-search-country:focus:active{
+    outline: none;
+    border: 0;
 }

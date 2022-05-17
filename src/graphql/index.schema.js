@@ -1,22 +1,17 @@
-const { buildSchema } = require("graphql");
+import { gql } from "apollo-boost";
 
-module.exports = buildSchema(`
-type Country {
-    code: ID!
-    name: String!
-    native: String!
-    phone: String!
-    continent: Continent!
-    capital: String
-    currency: String
-    languages: [Language!]!
-    emoji: String!
-    emojiU: String!
-    states: [State!]!
+export const GET_COUNTRIES = gql`
+  query Countries {
+    countries {
+      name
+      continent {
+        name
+      }
+      languages {
+        name
+      }
+      emoji
+      emojiU
+    }
   }
-  
-  type Query {
-
-    country(code: ID!): Country
-
-  }`);
+`;

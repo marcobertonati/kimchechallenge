@@ -6,17 +6,14 @@ import "./countries.group.css";
 export default function CountriesByContinent({ countries }) {
   return (
     <>
-      <div>
         {countries.map((continent) => {
           return (
             <>
               <Row>
-                <h3>{continent[0].toUpperCase()}</h3>
+                <h3>{continent[0].toUpperCase()} 🗺️</h3>
                 {continent[1].map((country) => {
                   return (
-                    <Col>
-                      {/* <span>{country.emoji}</span> */}
-                      {/* <p style={{ fontFamily: "Arial" }}>{country.emojiU};</p> */}
+                    <Col className="country-finded">
                       <p>{country.name}</p>
                     </Col>
                   );
@@ -26,7 +23,6 @@ export default function CountriesByContinent({ countries }) {
             </>
           );
         })}
-      </div>
     </>
   );
 }

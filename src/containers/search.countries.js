@@ -5,31 +5,18 @@ import Search from "../components/search";
 import CountriesByContinent from "../components/countries.by.continent";
 import CountriesByLenguage from "../components/countries.by.lenguage";
 
+/* Boostrap css */
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./search.container.css";
 
+/* Bootstrap components */
 import { Container, Row, Col, Button } from "react-bootstrap";
 
 /* Apollo modules */
-import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 /* Graphql Query */
-const GET_COUNTRIES = gql`
-  query Countries {
-    countries {
-      name
-      continent {
-        name
-      }
-      languages {
-        name
-      }
-      emoji
-      emojiU
-    }
-  }
-`;
+import { GET_COUNTRIES } from "../graphql/index.schema";
 
 export default function SearchCountries() {
   /* Countries by continent & lenguages */
@@ -51,7 +38,6 @@ export default function SearchCountries() {
     );
 
     /* COUNTRIES BY CONTINENT */
-
     const countriesFilteredByContinent = filteredCountries.reduce(
       (acc, country) => {
         const continent = country.continent.name
@@ -74,7 +60,6 @@ export default function SearchCountries() {
     setCountriesByContinent(arrCountriesByContinent);
 
     /* COUNTRIES BY LENGUAGE */
-
     const countriesFilteredByLenguage = filteredCountries.reduce(
       (acc, country) => {
         const lenguages = country.languages;
@@ -86,7 +71,6 @@ export default function SearchCountries() {
             acc[lenguage.name].push(country);
           }
         });
-
         return acc;
       },
       {} // Initial value with a empty object
@@ -96,6 +80,7 @@ export default function SearchCountries() {
     setCountriesByLenguage(arrCountriesByLenguages);
   }
 
+  /*Function that set the group to show */
   function onHandleClick(event) {
     setShowGroup(event.target.value);
   }
@@ -108,33 +93,40 @@ export default function SearchCountries() {
       <Row className="search-container-box">
         <Col>
           <Search onHandleChange={onHandleChange} />
-          <Row>
-            <Button
-              id="btn-continent"
-              onClick={onHandleClick}
-              value="0"
-              variant="outline-light"
-            >
-              Group by Continent{" "}
-              {countriesByContinent.length === 0 ? (
-                ""
-              ) : (
-                <span> : {countriesByContinent.length}</span>
-              )}
-            </Button>
-            <Button
-              id="btn-lenguage"
-              onClick={onHandleClick}
-              value="1"
-              variant="outline-light"
-            >
-              Group by Lenguage{" "}
-              {countriesByLenguage.length === 0 ? (
-                ""
-              ) : (
-                <span> : {countriesByLenguage.length}</span>
-              )}
-            </Button>
+          <Row className="group-by">
+            <Col xs="4" md="2">
+              <h4>Group by: </h4>
+            </Col>
+            <Col xs="4" md="5">
+              <Button
+                id="btn-continent"
+                onClick={onHandleClick}
+                value="0"
+                variant="outline-light"
+              >
+                by Continent{" "}
+                {countriesByContinent.length === 0 ? (
+                  ""
+                ) : (
+                  <span> : {countriesByContinent.length}</span>
+                )}
+              </Button>
+            </Col>
+            <Col xs="4" md="5">
+              <Button
+                id="btn-lenguage"
+                onClick={onHandleClick}
+                value="1"
+                variant="outline-light"
+              >
+                by Lenguage{" "}
+                {countriesByLenguage.length === 0 ? (
+                  ""
+                ) : (
+                  <span> : {countriesByLenguage.length}</span>
+                )}
+              </Button>
+            </Col>
           </Row>
         </Col>
       </Row>
@@ -147,54 +139,6 @@ export default function SearchCountries() {
             <CountriesByLenguage countries={countriesByLenguage} />
           )}
         </Col>
-
-        {/* <div>
-        {countriesByContinent.map((continent) => {
-          return (
-            <>
-              <div>
-                {continent[0].toUpperCase()}
-                <br></br>
-                {continent[1].map((country) => {
-                  return (
-                    <div>
-                      <span>{country.emoji}</span> 
-                      <p style={{ fontFamily: "Arial" }}>{country.emojiU};</p> 
-                      <p>{country.name}</p>
-                    </div>
-                  );
-                })}
-              </div>
-              <br></br>
-            </>
-          );
-        })}
-      </div> */}
-
-        {/* <h2>Group by lenguage</h2>
-
-      <div>
-        {countriesByLenguage.map((lenguage) => {
-          return (
-            <>
-              <div>
-                {lenguage[0].toUpperCase()}
-                <br></br>
-                {lenguage[1].map((country) => {
-                  return (
-                    <div>
-                      <span>{country.emoji}</span>
-                      <p style={{ fontFamily: "Arial" }}>{country.emojiU};</p>
-                      <p>{country.name}</p>
-                    </div>
-                  );
-                })}
-              </div>
-              <br></br>
-            </>
-          );
-        })}
-      </div> */}
       </Row>
     </Container>
   );
